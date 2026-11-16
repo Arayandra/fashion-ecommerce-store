@@ -48,4 +48,25 @@ class CheckoutAccessTest extends TestCase
             ->get('/income')
             ->assertRedirect(route('user'));
     }
+    public function test_guest_cannot_add_items_to_cart_or_wishlist(): void
+    {
+        $this->get('/add-to-cart/example-product')
+            ->assertRedirect(route('login'));
+
+        $this->post('/add-to-cart', ['slug' => 'example-product', 'quant' => [1 => 1]])
+            ->assertRedirect(route('login'));
+
+        $this->get('/wishlist/example-product')
+            ->assertRedirect(route('login'));
+    }
+
+    public function test_guest_cannot_run_admin_maintenance_utilities(): void
+    {
+        $this->get('/cache-clear')
+            ->assertRedirect(route('login'));
+
+        $this->get('/storage-link')
+            ->assertRedirect(route('login'));
+    }
+
 }
