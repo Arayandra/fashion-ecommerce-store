@@ -45,14 +45,21 @@ class WishlistController extends Controller
         return back();       
     }  
     
-    public function wishlistDelete(Request $request){
-        $wishlist = Wishlist::find($request->id);
-        if ($wishlist) {
-            $wishlist->delete();
-            session()->flash('success','Wishlist successfully removed');
-            return back();  
+    public function wishlistDelete(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        $wishlist = Wishlist::whereKey($validated['id'])
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$wishlist) {
+            abort(404);
         }
-        session()->flash('error','Error please try again');
-        return back();       
+
+        $wishlist->delete();
+        return back()->with('success', 'Wishlist successfully removed.');
     }     
 }
