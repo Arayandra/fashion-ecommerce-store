@@ -1,5 +1,7 @@
 # E-Shop — Fashion & Accessories Store
 
+![CI](https://github.com/Arayandra/fashion-ecommerce-store/actions/workflows/ci.yml/badge.svg?branch=main)
+
 Aplikasi toko online berbasis **Laravel 10** untuk menampilkan dan menjual produk fashion serta aksesori. Proyek ini dibuat sebagai aplikasi pemrograman web dengan halaman pelanggan dan panel administrasi.
 
 ![Laravel](https://img.shields.io/badge/Laravel-10-FF2D20?logo=laravel&logoColor=white)
@@ -187,3 +189,24 @@ The next maintenance release should move to PHP 8.3+ and Laravel 13 after a stag
 
 
 > The storefront frontend uses Blade, Bootstrap, and jQuery. The unused Laravel scaffold Vue component has been removed; the repository does not currently claim a Vue-powered storefront.
+
+
+## Rencana upgrade Laravel
+
+**Baseline saat ini:** Laravel 10 dan PHP 8.1+. Security support Laravel 10 berakhir pada **4 Februari 2025**. Repository masih perlu dipindahkan ke framework yang didukung.
+
+**Target:** Laravel 13 dengan PHP 8.3+. Upgrade belum diterapkan pada manifest atau lockfile Composer.
+
+Sebelum upgrade, verifikasi kompatibilitas `laravel/socialite`, Sanctum, Laravel UI, DomPDF, Pusher, Newsletter, Laravel File Manager, dan paket PayPal. Fitur PayPal tetap dinonaktifkan sampai implementasi controller, verifikasi pembayaran di sisi server, webhook, idempotensi, dan tes end-to-end tersedia. Jangan mengaktifkan ulang route pembayaran hanya karena dependency berhasil diperbarui.
+
+Tahapan yang disarankan:
+
+1. Buat branch `upgrade/laravel-13` dan pertahankan CI Laravel 10 yang hijau sebagai baseline.
+2. Pindahkan runtime ke PHP 8.3+, lalu audit constraint setiap dependency dengan `composer why-not laravel/framework ^13.0`.
+3. Upgrade framework dan paket integrasi secara bertahap; periksa autentikasi pelanggan/admin, cart, wishlist, checkout COD, pesanan, pengiriman, laporan, file manager, dan notifikasi.
+4. Uji database migration/seed pada database sementara, jalankan PHPUnit, `composer validate`, `composer audit`, dan build asset.
+5. Perbarui `composer.lock` dan dokumentasi hanya setelah workflow CI serta smoke test halaman pelanggan dan admin berhasil.
+
+File `e-com.sql` diperlukan oleh prosedur instalasi yang dijelaskan di atas. Aset statis di `public/vendor` dan `public/backend/vendor` tidak dihapus sebelum seluruh referensi frontend diganti.
+
+Referensi: [Laravel release/support policy](https://laravel.com/framework/docs/releases) · [Laravel 13 upgrade guide](https://laravel.com/docs/13.x/upgrade).
