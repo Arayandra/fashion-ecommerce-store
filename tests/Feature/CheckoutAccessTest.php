@@ -30,13 +30,13 @@ class CheckoutAccessTest extends TestCase
 
     public function test_cart_deletion_requires_authentication(): void
     {
-        $this->get('/cart-delete/1')
+        $this->delete('/cart-delete/1')
             ->assertRedirect(route('login'));
     }
 
     public function test_wishlist_deletion_requires_authentication(): void
     {
-        $this->get('/wishlist-delete/1')
+        $this->delete('/wishlist-delete/1')
             ->assertRedirect(route('login'));
     }
 

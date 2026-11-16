@@ -12,46 +12,41 @@ class WishlistController extends Controller
         $this->product=$product;
     }
 
-    public function wishlist(Request $request){
-        // dd($request->all());
-        if (empty($request->slug)) {
-            session()->flash('error','Invalid Products');
-            return back();
-        }        
-        $product = Product::where('slug', $request->slug)->first();
-        // return $product;
-        if (empty($product)) {
-            session()->flash('error','Invalid Products');
-            return back();
-        }
-
-        $already_wishlist = Wishlist::where('user_id', auth()->user()->id)->where('cart_id',null)->where('product_id', $product->id)->first();
-        // return $already_wishlist;
-        if($already_wishlist) {
-            session()->flash('error','You already placed in wishlist');
-            return back();
-        }else{
-            
-            $wishlist = new Wishlist;
-            $wishlist->user_id = auth()->user()->id;
-            $wishlist->product_id = $product->id;
-            $wishlist->price = ($product->price-($product->price*$product->discount)/100);
-            $wishlist->quantity = 1;
-            $wishlist->amount=$wishlist->price*$wishlist->quantity;
-            if ($wishlist->product->stock < $wishlist->quantity || $wishlist->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-            $wishlist->save();
-        }
-        session()->flash('success','Product successfully added to wishlist');
-        return back();       
-    }  
-    
-    public function wishlistDelete(Request $request)
+    public function wishlist(string $slug)
     {
-        $validated = $request->validate([
-            'id' => ['required', 'integer'],
-        ]);
+        $product = Product::where('slug', $slug)
+            ->where('status', 'active')
+            ->first();
 
-        $wishlist = Wishlist::whereKey($validated['id'])
+        if (!$product) {
+            return back()->with('error', 'Invalid or unavailable product.');
+        }
+
+        $alreadyInWishlist = Wishlist::where('user_id', auth()->id())
+            ->whereNull('cart_id')
+            ->where('product_id', $product->id)
+            ->exists();
+
+        if ($alreadyInWishlist) {
+            return back()->with('error', 'You already placed this product in your wishlist.');
+        }
+
+        $wishlist = new Wishlist([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+            'price' => (float) $product->price
+                - ((float) $product->price * (float) $product->discount) / 100,
+            'quantity' => 1,
+        ]);
+        $wishlist->amount = $wishlist->price;
+        $wishlist->save();
+
+        return back()->with('success', 'Product successfully added to wishlist.');
+    }
+
+    public function wishlistDelete(int $id)
+    {
+        $wishlist = Wishlist::whereKey($id)
             ->where('user_id', auth()->id())
             ->first();
 
@@ -60,6 +55,7 @@ class WishlistController extends Controller
         }
 
         $wishlist->delete();
+
         return back()->with('success', 'Wishlist successfully removed.');
-    }     
+    }
 }

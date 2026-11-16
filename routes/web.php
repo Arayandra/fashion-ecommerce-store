@@ -68,8 +68,8 @@
 // Cart section
     Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware(['auth', 'user']);
     Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware(['auth', 'user']);
-    Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->middleware('auth')->name('cart-delete');
-    Route::post('cart-update', [CartController::class, 'cartUpdate'])->middleware('auth')->name('cart.update');
+    Route::delete('cart-delete/{id}', [CartController::class, 'cartDelete'])->middleware(['auth', 'user'])->name('cart-delete');
+    Route::post('cart-update', [CartController::class, 'cartUpdate'])->middleware(['auth', 'user'])->name('cart.update');
 
     Route::get('/cart', function () {
         return view('frontend.pages.cart');
@@ -80,8 +80,8 @@
         return view('frontend.pages.wishlist');
     })->middleware('auth')->name('wishlist');
     Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist')->middleware(['auth', 'user']);
-    Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->middleware('auth')->name('wishlist-delete');
-    Route::post('cart/order', [OrderController::class, 'store'])->middleware('auth')->name('cart.order');
+    Route::delete('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->middleware(['auth', 'user'])->name('wishlist-delete');
+    Route::post('cart/order', [OrderController::class, 'store'])->middleware(['auth', 'user'])->name('cart.order');
     Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->middleware('auth')->name('order.pdf');
     Route::get('/income', [OrderController::class, 'incomeChart'])->middleware(['auth', 'admin'])->name('product.order.income');
 // Route::get('/user/chart',[AdminController::class, 'userPieChart'])->name('user.piechart');

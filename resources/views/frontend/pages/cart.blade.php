@@ -80,9 +80,11 @@
                                             <td class="total-amount cart_single_price" data-title="Total"><span
                                                     class="money">Rp{{ $cart['amount'] }}</span></td>
 
-                                            <td class="action" data-title="Remove"><a
-                                                    href="{{ route('cart-delete', $cart->id) }}"><i
-                                                        class="ti-trash remove-icon"></i></a></td>
+                                            <td class="action" data-title="Remove">
+                                                <button type="submit" form="cart-delete-{{ $cart->id }}" class="btn btn-link p-0" aria-label="Remove {{ $cart->product['title'] }} from cart">
+                                                    <i class="ti-trash remove-icon"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     <track>
@@ -108,6 +110,14 @@
                             </form>
                         </tbody>
                     </table>
+                    @if (Helper::getAllProductFromCart())
+                        @foreach (Helper::getAllProductFromCart() as $cart)
+                            <form id="cart-delete-{{ $cart->id }}" action="{{ route('cart-delete', $cart->id) }}" method="POST" class="d-none">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        @endforeach
+                    @endif
                     <!--/ End Shopping Summery -->
                 </div>
             </div>
