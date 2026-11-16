@@ -12,6 +12,7 @@ use Notification;
 use Helper;
 use Illuminate\Support\Str;
 use App\Notifications\StatusNotification;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -44,120 +45,128 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'first_name'=>'string|required',
-            'last_name'=>'string|required',
-            'address1'=>'string|required',
-            'address2'=>'string|nullable',
-            'coupon'=>'nullable|numeric',
-            'phone'=>'numeric|required',
-            'post_code'=>'string|nullable',
-            'email'=>'string|required'
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:100'],
+            'last_name' => ['required', 'string', 'max:100'],
+            'address1' => ['required', 'string', 'max:1000'],
+            'address2' => ['nullable', 'string', 'max:1000'],
+            'country' => ['required', 'string', 'max:100'],
+            'phone' => ['required', 'string', 'max:30'],
+            'post_code' => ['nullable', 'string', 'max:20'],
+            'email' => ['required', 'email', 'max:255'],
+            'shipping' => ['nullable', 'integer', 'exists:shippings,id'],
+            'payment_method' => ['nullable', 'in:cod,paypal'],
         ]);
-        // return $request->all();
 
-        if(empty(Cart::where('user_id',auth()->user()->id)->where('order_id',null)->first())){
-            request()->session()->flash::warning('error','Cart is Empty !');
-            return back();
-        }
-        // $cart=Cart::get();
-        // // return $cart;
-        // $cart_index='ORD-'.strtoupper(uniqid());
-        // $sub_total=0;
-        // foreach($cart as $cart_item){
-        //     $sub_total+=$cart_item['amount'];
-        //     $data=array(
-        //         'cart_id'=>$cart_index,
-        //         'user_id'=>$request->user()->id,
-        //         'product_id'=>$cart_item['id'],
-        //         'quantity'=>$cart_item['quantity'],
-        //         'amount'=>$cart_item['amount'],
-        //         'status'=>'new',
-        //         'price'=>$cart_item['price'],
-        //     );
+        $paymentMethod = $validated['payment_method'] ?? 'cod';
+        $shippingId = $validated['shipping'] ?? null;
 
-        //     $cart=new Cart();
-        //     $cart->fill($data);
-        //     $cart->save();
-        // }
+        try {
+            $order = DB::transaction(function () use ($validated, $paymentMethod, $shippingId) {
+                $cartItems = Cart::with('product')
+                    ->where('user_id', auth()->id())
+                    ->whereNull('order_id')
+                    ->lockForUpdate()
+                    ->get();
 
-        // $total_prod=0;
-        // if(session('cart')){
-        //         foreach(session('cart') as $cart_items){
-        //             $total_prod+=$cart_items['quantity'];
-        //         }
-        // }
+                if ($cartItems->isEmpty()) {
+                    return null;
+                }
 
-        $order=new Order();
-        $order_data=$request->all();
-        $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
-        $order_data['user_id']=$request->user()->id;
-        $order_data['shipping_id']=$request->shipping;
-        $shipping=Shipping::where('id',$order_data['shipping_id'])->pluck('price');
-        // return session('coupon')['value'];
-        $order_data['sub_total']=Helper::totalCartPrice();
-        $order_data['quantity']=Helper::cartCount();
-        if(session('coupon')){
-            $order_data['coupon']=session('coupon')['value'];
-        }
-        if($request->shipping){
-            if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0]-session('coupon')['value'];
+                foreach ($cartItems as $item) {
+                    if (!$item->product || (int) $item->quantity < 1) {
+                        throw new \RuntimeException('A cart item is no longer available.');
+                    }
+
+                    if ((int) $item->product->stock < (int) $item->quantity) {
+                        throw new \RuntimeException('Insufficient stock for ' . $item->product->title . '.');
+                    }
+                }
+
+                $subtotal = $cartItems->sum(function ($item) {
+                    return (float) $item->price * (int) $item->quantity;
+                });
+                $quantity = $cartItems->sum('quantity');
+
+                $shippingPrice = 0;
+                if ($shippingId) {
+                    $shipping = Shipping::whereKey($shippingId)
+                        ->where('status', 'active')
+                        ->first();
+
+                    if (!$shipping) {
+                        throw new \RuntimeException('The selected shipping method is no longer available.');
+                    }
+
+                    $shippingPrice = (float) $shipping->price;
+                }
+
+                // Coupon values are kept server-side in the session; never trust
+                // a coupon amount submitted in the checkout form.
+                $couponDiscount = min(
+                    max(0, (float) session('coupon.value', 0)),
+                    $subtotal
+                );
+
+                $order = Order::create([
+                    'order_number' => 'ORD-' . strtoupper(Str::random(10)),
+                    'user_id' => auth()->id(),
+                    'sub_total' => $subtotal,
+                    'shipping_id' => $shippingId,
+                    'coupon' => $couponDiscount > 0 ? $couponDiscount : null,
+                    'total_amount' => max(0, $subtotal + $shippingPrice - $couponDiscount),
+                    'quantity' => $quantity,
+                    'payment_method' => $paymentMethod,
+                    // PayPal is not paid until the provider confirms capture.
+                    'payment_status' => 'unpaid',
+                    'status' => 'new',
+                    'first_name' => $validated['first_name'],
+                    'last_name' => $validated['last_name'],
+                    'country' => $validated['country'],
+                    'post_code' => $validated['post_code'] ?? null,
+                    'address1' => $validated['address1'],
+                    'address2' => $validated['address2'] ?? null,
+                    'phone' => $validated['phone'],
+                    'email' => $validated['email'],
+                ]);
+
+                Cart::whereIn('id', $cartItems->pluck('id'))
+                    ->where('user_id', auth()->id())
+                    ->whereNull('order_id')
+                    ->update(['order_id' => $order->id]);
+
+                return $order;
+            });
+
+            if (!$order) {
+                return back()->with('error', 'Cart is empty.');
             }
-            else{
-                $order_data['total_amount']=Helper::totalCartPrice()+$shipping[0];
-            }
-        }
-        else{
-            if(session('coupon')){
-                $order_data['total_amount']=Helper::totalCartPrice()-session('coupon')['value'];
-            }
-            else{
-                $order_data['total_amount']=Helper::totalCartPrice();
-            }
-        }
-        // return $order_data['total_amount'];
-        $order_data['status']="new";
-        if(request('payment_method')=='paypal'){
-            $order_data['payment_method']='paypal';
-            $order_data['payment_status']='paid';
-        }
-        else{
-            $order_data['payment_method']='cod';
-            $order_data['payment_status']='Unpaid';
-        }
-        $order->fill($order_data);
-        $status=$order->save();
-        if($order)
-        // dd($order->id);
-        $users=User::where('role','admin')->first();
-        $details=[
-            'title'=>'New order created',
-            'actionURL'=>route('order.show',$order->id),
-            'fas'=>'fa-file-alt'
-        ];
-        Notification::send($users, new StatusNotification($details));
-        if(request('payment_method')=='paypal'){
-            return redirect()->route('payment')->with(['id'=>$order->id]);
-        }
-        else{
-            session()->forget('cart');
-            session()->forget('coupon');
-        }
-        Cart::where('user_id', auth()->user()->id)->where('order_id', null)->update(['order_id' => $order->id]);
 
-        // dd($users);        
-        session()->flash('success','Your product successfully placed in order');
-        return redirect()->route('home');
+            $admin = User::where('role', 'admin')->first();
+            if ($admin) {
+                $details = [
+                    'title' => 'New order created',
+                    'actionURL' => route('order.show', $order->id),
+                    'fas' => 'fa-file-alt',
+                ];
+                Notification::send($admin, new StatusNotification($details));
+            }
+
+            session()->forget(['cart', 'coupon']);
+
+            if ($paymentMethod === 'paypal') {
+                return redirect()->route('payment')->with(['id' => $order->id]);
+            }
+
+            session()->flash('success', 'Your order has been placed successfully.');
+            return redirect()->route('home');
+        } catch (\Throwable $exception) {
+            report($exception);
+            return back()->withInput()->with('error', 'Unable to place the order. Please review the cart and try again.');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+        public function show($id)
     {
         $order=Order::find($id);
         // return $order;
@@ -270,16 +279,33 @@ class OrderController extends Controller
     }
 
     // PDF generate
-    public function pdf(Request $request){
-        $order=Order::getAllOrder($request->id);
-        // return $order;
-        $file_name=$order->order_number.'-'.$order->first_name.'.pdf';
-        // return $file_name;
-        $pdf=PDF::loadview('backend.order.pdf',compact('order'));
-        return $pdf->download($file_name);
+    public function pdf(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        $order = Order::getAllOrder($validated['id']);
+        if (!$order) {
+            abort(404);
+        }
+
+        $user = auth()->user();
+        if ($user->role !== 'admin' && (int) $order->user_id !== (int) $user->id) {
+            // Do not reveal whether another customer's order number exists.
+            abort(404);
+        }
+
+        $fileName = $order->order_number . '-' . preg_replace('/[^A-Za-z0-9_-]/', '', $order->first_name) . '.pdf';
+        $pdf = PDF::loadView('backend.order.pdf', compact('order'));
+
+        return $pdf->download($fileName);
     }
-    // Income chart
+
+        // Income chart
     public function incomeChart(Request $request){
+        abort_unless(auth()->check() && auth()->user()->role === 'admin', 403);
+
         $year=\Carbon\Carbon::now()->year;
         // dd($year);
         $items=Order::with(['cart_info'])->whereYear('created_at',$year)->where('status','delivered')->get()
