@@ -42,7 +42,7 @@ class CheckoutAccessTest extends TestCase
 
     public function test_income_report_is_not_available_to_a_normal_user(): void
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::create(['name' => 'Regular User', 'email' => uniqid('user_', true) . '@example.test', 'password' => Hash::make('password'), 'role' => 'user', 'status' => 'active']);
 
         $this->actingAs($user)
             ->get('/income')
