@@ -29,7 +29,7 @@ Aplikasi toko online berbasis **Laravel 10** untuk menampilkan dan menjual produ
 - Ulasan produk.
 - Blog, kategori/tag artikel, dan komentar.
 - Formulir kontak serta langganan newsletter.
-- Alur pembayaran Cash on Delivery (COD) dan integrasi PayPal yang memerlukan konfigurasi kredensial.
+- Alur pesanan dengan Cash on Delivery (COD). PayPal tidak diaktifkan pada source saat ini karena controller integrasinya tidak tersedia.
 
 ### Panel administrator
 - Dashboard dan ringkasan pesanan.
@@ -139,7 +139,7 @@ http://127.0.0.1:8000
 
 ## Catatan konfigurasi
 
-- Fitur PayPal membutuhkan kredensial dan konfigurasi provider yang sesuai. Uji alur pembayaran menggunakan sandbox sebelum mengaktifkannya untuk transaksi sungguhan.
+- PayPal belum tersedia pada source aktif dan route pembayaran yang rusak telah dihapus. Jika ingin mengaktifkannya kembali, implementasikan controller, capture/verifikasi pembayaran sisi server, webhook, idempotensi, dan automated tests terlebih dahulu.
 - Pengiriman email, newsletter, dan broadcast/Pusher membutuhkan konfigurasi layanan masing-masing jika fitur tersebut digunakan.
 - File SQL berisi data contoh dari pengembangan. Tinjau dan ganti akun, data pengguna, kontak, produk, serta informasi toko sebelum dipakai di lingkungan lain.
 - Buat file **.env** lokal sendiri. Jangan mengunggah **.env**, API key, password, token, atau kredensial layanan ke GitHub.
@@ -174,7 +174,7 @@ Jalankan pengujian otomatis yang tersedia dengan:
 php artisan test
 ~~~
 
-Hasil perintah tersebut menjadi acuan kondisi pengujian pada mesin lokal. Integrasi eksternal seperti PayPal, email, newsletter, dan Pusher tetap perlu diuji dengan konfigurasi layanan yang valid.
+Hasil perintah tersebut menjadi acuan kondisi pengujian pada mesin lokal. Integrasi email, newsletter, dan Pusher tetap perlu diuji dengan konfigurasi layanan yang valid. Pembayaran yang didukung saat ini adalah COD.
 
 Proyek ini merupakan aplikasi pembelajaran/UAS dan belum dinyatakan siap produksi tanpa audit keamanan, pengujian alur transaksi, serta penyesuaian konfigurasi deployment.
 
