@@ -204,3 +204,8 @@ Tahapan yang disarankan:
 File `e-com.sql` diperlukan oleh prosedur instalasi yang dijelaskan di atas. Aset statis di `public/vendor` dan `public/backend/vendor` tidak dihapus sebelum seluruh referensi frontend diganti.
 
 Referensi: [Laravel release/support policy](https://laravel.com/framework/docs/releases) · [Laravel 13 upgrade guide](https://laravel.com/docs/13.x/upgrade).
+
+
+## Latest CI verification
+
+Verified on **16 November 2026** on branch `main`: **9 PHPUnit tests passed (22 assertions)**. CI also ran migrations against MySQL 8, installed frontend dependencies using `npm ci`, and completed the Laravel Mix production asset build. This does not verify the disabled PayPal integration or a real payment-provider transaction.
