@@ -28,16 +28,16 @@
     |
     */
 
-    // CACHE CLEAR ROUTE
-    Route::get('cache-clear', function () {
-        Artisan::call('optimize:clear');
-        request()->session()->flash('success', 'Successfully cache cleared.');
-        return redirect()->back();
-    })->name('cache.clear');
+    // Administrative maintenance utilities must never be public.
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('cache-clear', function () {
+            Artisan::call('optimize:clear');
+            request()->session()->flash('success', 'Successfully cache cleared.');
+            return redirect()->back();
+        })->name('cache.clear');
 
-
-    // STORAGE LINKED ROUTE
-    Route::get('storage-link',[AdminController::class,'storageLink'])->name('storage.link');
+        Route::get('storage-link', [AdminController::class, 'storageLink'])->name('storage.link');
+    });
 
 
     Auth::routes(['register' => false]);
@@ -69,8 +69,8 @@
 // Cart section
     Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware('user');
     Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware('user');
-    Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->name('cart-delete');
-    Route::post('cart-update', [CartController::class, 'cartUpdate'])->name('cart.update');
+    Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->middleware('auth')->name('cart-delete');
+    Route::post('cart-update', [CartController::class, 'cartUpdate'])->middleware('auth')->name('cart.update');
 
     Route::get('/cart', function () {
         return view('frontend.pages.cart');
@@ -79,19 +79,19 @@
 // Wishlist
     Route::get('/wishlist', function () {
         return view('frontend.pages.wishlist');
-    })->name('wishlist');
+    })->middleware('auth')->name('wishlist');
     Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist')->middleware('user');
-    Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->name('wishlist-delete');
-    Route::post('cart/order', [OrderController::class, 'store'])->name('cart.order');
-    Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->name('order.pdf');
-    Route::get('/income', [OrderController::class, 'incomeChart'])->name('product.order.income');
+    Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->middleware('auth')->name('wishlist-delete');
+    Route::post('cart/order', [OrderController::class, 'store'])->middleware('auth')->name('cart.order');
+    Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->middleware('auth')->name('order.pdf');
+    Route::get('/income', [OrderController::class, 'incomeChart'])->middleware(['auth', 'admin'])->name('product.order.income');
 // Route::get('/user/chart',[AdminController::class, 'userPieChart'])->name('user.piechart');
     Route::get('/product-grids', [FrontendController::class, 'productGrids'])->name('product-grids');
     Route::get('/product-lists', [FrontendController::class, 'productLists'])->name('product-lists');
     Route::match(['get', 'post'], '/filter', [FrontendController::class, 'productFilter'])->name('shop.filter');
 // Order Track
     Route::get('/product/track', [OrderController::class, 'orderTrack'])->name('order.track');
-    Route::post('product/track/order', [OrderController::class, 'productTrackOrder'])->name('product.track.order');
+    Route::post('product/track/order', [OrderController::class, 'productTrackOrder'])->middleware('auth')->name('product.track.order');
 // Blog
     Route::get('/blog', [FrontendController::class, 'blog'])->name('blog');
     Route::get('/blog-detail/{slug}', [FrontendController::class, 'blogDetail'])->name('blog.detail');
@@ -104,18 +104,18 @@
     Route::post('/subscribe', [FrontendController::class, 'subscribe'])->name('subscribe');
 
 // Product Review
-    Route::resource('/review', 'ProductReviewController');
-    Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->name('review.store');
+    Route::resource('/review', 'ProductReviewController')->middleware('auth');
+    Route::post('product/{slug}/review', [ProductReviewController::class, 'store'])->middleware('auth')->name('review.store');
 
 // Post Comment
-    Route::post('post/{slug}/comment', [PostCommentController::class, 'store'])->name('post-comment.store');
-    Route::resource('/comment', 'PostCommentController');
+    Route::post('post/{slug}/comment', [PostCommentController::class, 'store'])->middleware('auth')->name('post-comment.store');
+    Route::resource('/comment', 'PostCommentController')->middleware('auth');
 // Coupon
-    Route::post('/coupon-store', [CouponController::class, 'couponStore'])->name('coupon-store');
+    Route::post('/coupon-store', [CouponController::class, 'couponStore'])->middleware('auth')->name('coupon-store');
 // Payment
-    Route::get('payment', [PayPalController::class, 'payment'])->name('payment');
-    Route::get('cancel', [PayPalController::class, 'cancel'])->name('payment.cancel');
-    Route::get('payment/success', [PayPalController::class, 'success'])->name('payment.success');
+    Route::get('payment', [PayPalController::class, 'payment'])->middleware('auth')->name('payment');
+    Route::get('cancel', [PayPalController::class, 'cancel'])->middleware('auth')->name('payment.cancel');
+    Route::get('payment/success', [PayPalController::class, 'success'])->middleware('auth')->name('payment.success');
 
 
 // Backend section start
