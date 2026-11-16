@@ -66,20 +66,20 @@
     Route::get('/product-sub-cat/{slug}/{sub_slug}', [FrontendController::class, 'productSubCat'])->name('product-sub-cat');
     Route::get('/product-brand/{slug}', [FrontendController::class, 'productBrand'])->name('product-brand');
 // Cart section
-    Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware('user');
-    Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware('user');
+    Route::get('/add-to-cart/{slug}', [CartController::class, 'addToCart'])->name('add-to-cart')->middleware(['auth', 'user']);
+    Route::post('/add-to-cart', [CartController::class, 'singleAddToCart'])->name('single-add-to-cart')->middleware(['auth', 'user']);
     Route::get('cart-delete/{id}', [CartController::class, 'cartDelete'])->middleware('auth')->name('cart-delete');
     Route::post('cart-update', [CartController::class, 'cartUpdate'])->middleware('auth')->name('cart.update');
 
     Route::get('/cart', function () {
         return view('frontend.pages.cart');
     })->name('cart');
-    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout')->middleware('user');
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout')->middleware(['auth', 'user']);
 // Wishlist
     Route::get('/wishlist', function () {
         return view('frontend.pages.wishlist');
     })->middleware('auth')->name('wishlist');
-    Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist')->middleware('user');
+    Route::get('/wishlist/{slug}', [WishlistController::class, 'wishlist'])->name('add-to-wishlist')->middleware(['auth', 'user']);
     Route::get('wishlist-delete/{id}', [WishlistController::class, 'wishlistDelete'])->middleware('auth')->name('wishlist-delete');
     Route::post('cart/order', [OrderController::class, 'store'])->middleware('auth')->name('cart.order');
     Route::get('order/pdf/{id}', [OrderController::class, 'pdf'])->middleware('auth')->name('order.pdf');
