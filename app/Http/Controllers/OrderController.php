@@ -55,7 +55,7 @@ class OrderController extends Controller
             'post_code' => ['nullable', 'string', 'max:20'],
             'email' => ['required', 'email', 'max:255'],
             'shipping' => ['nullable', 'integer', 'exists:shippings,id'],
-            'payment_method' => ['nullable', 'in:cod,paypal'],
+            'payment_method' => ['nullable', 'in:cod'],
         ]);
 
         $paymentMethod = $validated['payment_method'] ?? 'cod';
@@ -154,11 +154,7 @@ class OrderController extends Controller
 
             session()->forget(['cart', 'coupon']);
 
-            if ($paymentMethod === 'paypal') {
-                return redirect()->route('payment')->with(['id' => $order->id]);
-            }
-
-            session()->flash('success', 'Your order has been placed successfully.');
+            session()->flash('success', 'Your COD order has been placed successfully.');
             return redirect()->route('home');
         } catch (\Throwable $exception) {
             report($exception);
@@ -194,28 +190,52 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $order=Order::find($id);
-        $this->validate($request,[
-            'status'=>'required|in:new,process,delivered,cancel'
+        $validated = $request->validate([
+            'status' => ['required', 'in:new,process,delivered,cancel'],
         ]);
-        $data=$request->all();
-        // return $request->status;
-        if($request->status=='delivered'){
-            foreach($order->cart as $cart){
-                $product=$cart->product;
-                // return $product;
-                $product->stock -=$cart->quantity;
-                $product->save();
-            }
+
+        try {
+            DB::transaction(function () use ($id, $validated) {
+                $order = Order::whereKey($id)->lockForUpdate()->firstOrFail();
+                $previousStatus = $order->status;
+                $nextStatus = $validated['status'];
+
+                // Once delivered, an order cannot be moved backwards. This keeps
+                // stock deductions from being repeated by status toggling.
+                if ($previousStatus === 'delivered' && $nextStatus !== 'delivered') {
+                    abort(409, 'A delivered order cannot be moved to another status.');
+                }
+
+                if ($nextStatus === 'delivered' && $previousStatus !== 'delivered') {
+                    $items = Cart::where('order_id', $order->id)
+                        ->lockForUpdate()
+                        ->get();
+
+                    foreach ($items as $item) {
+                        $product = \App\Models\Product::whereKey($item->product_id)
+                            ->lockForUpdate()
+                            ->firstOrFail();
+
+                        if ((int) $product->stock < (int) $item->quantity) {
+                            abort(409, 'Insufficient stock to mark this order as delivered.');
+                        }
+                    }
+
+                    foreach ($items as $item) {
+                        \App\Models\Product::whereKey($item->product_id)
+                            ->decrement('stock', (int) $item->quantity);
+                    }
+                }
+
+                $order->status = $nextStatus;
+                $order->save();
+            });
+
+            return redirect()->route('order.index')->with('success', 'Order status updated successfully.');
+        } catch (\Throwable $exception) {
+            report($exception);
+            return back()->with('error', 'Unable to update this order status. Check stock and current order state.');
         }
-        $status=$order->fill($data)->save();
-        if($status){
-            session()->flash('success','Successfully updated order');
-        }
-        else{
-            session()->flash('error','Error while updating order');
-        }
-        return redirect()->route('order.index');
     }
 
     /**
@@ -279,13 +299,9 @@ class OrderController extends Controller
     }
 
     // PDF generate
-    public function pdf(Request $request)
+    public function pdf($id)
     {
-        $validated = $request->validate([
-            'id' => ['required', 'integer'],
-        ]);
-
-        $order = Order::getAllOrder($validated['id']);
+        $order = Order::getAllOrder($id);
         if (!$order) {
             abort(404);
         }
