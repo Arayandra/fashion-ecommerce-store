@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class CheckoutAccessTest extends TestCase
@@ -18,7 +19,7 @@ class CheckoutAccessTest extends TestCase
 
     public function test_paypal_is_rejected_until_a_real_payment_controller_is_implemented(): void
     {
-        $user = User::factory()->create(['role' => 'user']);
+        $user = User::create(['name' => 'Regular User', 'email' => uniqid('user_', true) . '@example.test', 'password' => Hash::make('password'), 'role' => 'user', 'status' => 'active']);
 
         $this->actingAs($user)
             ->post('/cart/order', [
@@ -45,6 +46,6 @@ class CheckoutAccessTest extends TestCase
 
         $this->actingAs($user)
             ->get('/income')
-            ->assertForbidden();
+            ->assertRedirect(route('user'));
     }
 }
