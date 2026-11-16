@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="960" viewBox="0 0 1440 960" role="img" aria-labelledby="title desc">
+<title id="title">E-Shop Fashion Store preview</title>
+<desc id="desc">Illustrated fashion e-commerce storefront with navigation, search, campaign banner, category filters and product cards.</desc>
+<defs>
+ <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5eee7"/><stop offset="1" stop-color="#e7d4c3"/></linearGradient>
+ <linearGradient id="figure" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c99373"/><stop offset="1" stop-color="#8e5c44"/></linearGradient>
+ <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="9" stdDeviation="15" flood-color="#302820" flood-opacity=".10"/></filter>
+ <style>
+ .ink{fill:#27231f}.muted{fill:#897f77}.rust{fill:#a76545}.body{font:15px Arial,sans-serif}.tiny{font:12px Arial,sans-serif}.eyebrow{font:700 12px Arial,sans-serif;letter-spacing:2px}.h1{font:700 53px Arial,sans-serif;letter-spacing:-2px}.h2{font:700 25px Arial,sans-serif}.prod{font:700 15px Arial,sans-serif}.price{font:700 14px Arial,sans-serif}
+ </style>
+</defs>
+<rect width="1440" height="960" fill="#f3f2f0"/>
+<rect x="35" y="25" width="1370" height="910" rx="20" fill="#fff" filter="url(#shadow)"/>
+<rect x="35" y="25" width="1370" height="6" rx="3" fill="#a76545"/>
+<!-- header -->
+<text x="88" y="94" class="ink" font-family="Arial" font-size="31" font-weight="800" letter-spacing="1.5">E-SHOP</text>
+<circle cx="218" cy="84" r="4" fill="#a76545"/>
+<text x="268" y="88" class="ink body" font-weight="700">Home</text>
+<text x="338" y="88" class="muted body">Shop</text>
+<text x="398" y="88" class="muted body">About Us</text>
+<text x="490" y="88" class="muted body">Blog</text>
+<text x="542" y="88" class="muted body">Contact</text>
+<rect x="735" y="58" width="390" height="46" rx="8" fill="#f6f4f2"/>
+<circle cx="760" cy="80" r="7" stroke="#877c73" stroke-width="1.7" fill="none"/><path d="M765 85l6 6" stroke="#877c73" stroke-width="1.7" stroke-linecap="round"/>
+<text x="785" y="86" class="muted body">Search products here...</text>
+<circle cx="1190" cy="82" r="22" fill="#f6f4f2"/><path d="M1180 82c0-7 5-12 10-12s10 5 10 12v7h-20z" fill="none" stroke="#39332e" stroke-width="1.8"/><path d="M1182 76h16" stroke="#39332e" stroke-width="1.5"/>
+<circle cx="1260" cy="82" r="22" fill="#f6f4f2"/><path d="M1250 78h20l-2 18h-16zM1255 78c0-8 10-8 10 0" fill="none" stroke="#39332e" stroke-width="1.7" stroke-linejoin="round"/>
+<circle cx="1277" cy="65" r="9" fill="#a76545"/><text x="1277" y="69" fill="#fff" font-family="Arial" font-size="10" text-anchor="middle">2</text>
+<line x1="80" y1="127" x2="1360" y2="127" stroke="#ece8e4"/>
+<!-- hero -->
+<rect x="80" y="153" width="1280" height="370" rx="12" fill="url(#hero)"/>
+<text x="132" y="220" class="rust eyebrow">NEW SEASON · NEW STYLE</text>
+<text x="132" y="290" class="ink h1">Find your</text>
+<text x="132" y="349" class="ink h1">everyday style.</text>
+<text x="135" y="393" class="muted body">Discover clothing, shoes, bags, and accessories</text>
+<text x="135" y="418" class="muted body">selected to make every day feel a little more you.</text>
+<rect x="132" y="450" width="174" height="47" rx="6" fill="#29241f"/>
+<text x="219" y="479" fill="#fff" font-family="Arial" font-size="13" font-weight="700" text-anchor="middle" letter-spacing=".8">SHOP COLLECTION</text>
+<!-- fashion illustration -->
+<rect x="864" y="173" width="450" height="330" rx="10" fill="#cba68b"/>
+<circle cx="1192" cy="232" r="78" fill="#e8cdb8" opacity=".65"/>
+<path d="M1032 255c-4-39 16-62 44-58 27 4 36 26 29 61l-8 23h-56z" fill="#292622"/>
+<ellipse cx="1074" cy="254" rx="35" ry="44" fill="#c98e6d"/>
+<path d="M1040 248c-4-37 16-60 42-56 17 3 26 16 25 35-15-12-28-17-44-14-4 14-11 26-23 35z" fill="#302923"/>
+<path d="M1035 302l39-13 41 15 41 165H989z" fill="#f0e8df"/>
+<path d="M1034 304l-47 37-35 74 24 12 49-61 18-43zM1115 304l49 35 33 75-23 11-49-59-20-42z" fill="#c98e6d"/>
+<path d="M1060 307l14 32 15-32 24 11-7 151h-69l-5-151z" fill="#37312c"/>
+<path d="M1008 457h103l12 24H994z" fill="#28231f"/>
+<rect x="1201" y="352" width="63" height="77" rx="8" fill="#83523c"/>
+<path d="M1217 354c0-29 32-29 32 0" fill="none" stroke="#5c3829" stroke-width="6"/>
+<path d="M1192 437h83" stroke="#f3e7dc" stroke-width="2" opacity=".8"/>
+<!-- categories -->
+<text x="122" y="574" class="ink h2">Shop by category</text>
+<text x="1317" y="572" class="rust tiny" text-anchor="end">VIEW ALL PRODUCTS →</text>
+<rect x="122" y="594" width="130" height="36" rx="18" fill="#29241f"/><text x="187" y="617" fill="#fff" class="tiny" text-anchor="middle" font-weight="700">All products</text>
+<rect x="264" y="594" width="105" height="36" rx="18" fill="#f4f1ee"/><text x="316" y="617" class="ink tiny" text-anchor="middle">Men</text>
+<rect x="381" y="594" width="105" height="36" rx="18" fill="#f4f1ee"/><text x="433" y="617" class="ink tiny" text-anchor="middle">Women</text>
+<rect x="498" y="594" width="135" height="36" rx="18" fill="#f4f1ee"/><text x="565" y="617" class="ink tiny" text-anchor="middle">Accessories</text>
+<text x="122" y="679" class="ink h2">Trending items</text>
+<text x="1317" y="677" class="muted tiny" text-anchor="end">CURATED PICKS FOR YOU</text>
+<!-- cards -->
+<g>
+ <rect x="122" y="701" width="286" height="198" rx="9" fill="#faf8f6"/>
+ <rect x="137" y="715" width="256" height="116" rx="6" fill="#e9e1d9"/>
+ <path d="M226 741l-23 10-18 28 19 12 14-17v43h83v-43l14 17 19-12-18-28-24-10-18 16h-28z" fill="#c18d6c"/>
+ <path d="M245 742c0 13 20 13 20 0" fill="none" stroke="#865a43" stroke-width="3"/>
+ <text x="139" y="855" class="ink prod">Classic Overshirt</text><text x="139" y="878" class="muted tiny">Men's clothing</text><text x="390" y="878" class="ink price" text-anchor="end">Rp 289.000</text>
+</g>
+<g>
+ <rect x="424" y="701" width="286" height="198" rx="9" fill="#faf8f6"/>
+ <rect x="439" y="715" width="256" height="116" rx="6" fill="#e7e9e5"/>
+ <path d="M485 781c18-4 28-21 47-23l42 8c14 3 25 16 25 29 0 7-7 11-17 11h-91c-18 0-26-13-6-25z" fill="#f7f6f1" stroke="#777b73" stroke-width="3"/>
+ <path d="M524 764l20 7m-3 0l18 7m-1-1l13 7" stroke="#a76545" stroke-width="3" stroke-linecap="round"/><path d="M488 807h102" stroke="#34332f" stroke-width="4" stroke-linecap="round"/>
+ <text x="441" y="855" class="ink prod">Everyday Sneakers</text><text x="441" y="878" class="muted tiny">Footwear</text><text x="692" y="878" class="ink price" text-anchor="end">Rp 459.000</text>
+</g>
+<g>
+ <rect x="726" y="701" width="286" height="198" rx="9" fill="#faf8f6"/>
+ <rect x="741" y="715" width="256" height="116" rx="6" fill="#e8e1d8"/>
+ <path d="M825 750h88l13 69h-113z" fill="#59645e"/><path d="M843 751c0-26 52-26 52 0" fill="none" stroke="#38443d" stroke-width="6"/><path d="M855 774h30" stroke="#d9c6b3" stroke-width="2"/>
+ <text x="743" y="855" class="ink prod">Urban Backpack</text><text x="743" y="878" class="muted tiny">Bags & accessories</text><text x="994" y="878" class="ink price" text-anchor="end">Rp 349.000</text>
+</g>
+<g>
+ <rect x="1028" y="701" width="286" height="198" rx="9" fill="#faf8f6"/>
+ <rect x="1043" y="715" width="256" height="116" rx="6" fill="#efe3e0"/>
+ <path d="M1138 740l17 15 17-15 22 9-6 30-12-5-7 48h-63l-7-48-12 5-6-30z" fill="#b87f7d"/><path d="M1142 741c0 10 25 10 25 0" fill="none" stroke="#8c5f60" stroke-width="3"/>
+ <text x="1045" y="855" class="ink prod">Minimal Daily Dress</text><text x="1045" y="878" class="muted tiny">Women's clothing</text><text x="1296" y="878" class="ink price" text-anchor="end">Rp 399.000</text>
+</g>
+</svg>
