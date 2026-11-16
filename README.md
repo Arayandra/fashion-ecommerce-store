@@ -47,7 +47,7 @@ A real browser screenshot has not yet been added. The repository is documented f
 | Frontend | Blade, HTML, CSS, JavaScript |
 | UI framework | Bootstrap 5 |
 | Asset bundler | Laravel Mix dan Webpack |
-| Library tambahan | jQuery, Vue, Laravel Socialite |
+| Library tambahan | jQuery, Laravel Socialite |
 | Fitur tambahan | DomPDF, Pusher, PayPal package |
 
 ## Persyaratan
@@ -184,3 +184,6 @@ Lihat file [LICENSE](LICENSE) untuk informasi lisensi proyek.
 This repository currently uses Laravel 10, whose security-fix window has ended. The current checkout flow is **Cash on Delivery (COD) only**; PayPal is intentionally not advertised or routed because the controller implementation is absent.
 
 The next maintenance release should move to PHP 8.3+ and Laravel 13 after a staged compatibility review. Particular attention is needed for Laravel Mix/Webpack, the file manager, Socialite, newsletter, Pusher, and older resource-controller routes. Run the checkout, stock, order ownership, admin authorization, and frontend build tests after each upgrade. The CI workflow currently checks the existing Laravel 10 codebase and is not a claim that this framework version is supported for production.
+
+
+> The storefront frontend uses Blade, Bootstrap, and jQuery. The unused Laravel scaffold Vue component has been removed; the repository does not currently claim a Vue-powered storefront.
