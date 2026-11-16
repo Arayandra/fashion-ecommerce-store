@@ -10,10 +10,10 @@ Aplikasi toko online berbasis **Laravel 10** untuk menampilkan dan menjual produ
 ## Preview aplikasi
 
 <p align="center">
-  <img src="docs/images/storefront-preview.svg" alt="Ilustrasi preview antarmuka E-Shop Fashion Store" width="100%">
+  <img src="https://raw.githubusercontent.com/Arayandra/fashion-ecommerce-store/main/docs/images/storefront-preview.svg" alt="Preview antarmuka E-Shop Fashion Store" width="100%">
 </p>
 
-> Preview di atas merupakan ilustrasi antarmuka untuk memperlihatkan konsep halaman toko dan fitur yang tersedia. Gambar ini bukan screenshot hasil menjalankan aplikasi.
+> Gambar merupakan ilustrasi antarmuka toko untuk README, bukan screenshot hasil menjalankan aplikasi.
 
 ## Fitur
 
