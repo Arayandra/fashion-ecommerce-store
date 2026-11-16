@@ -12,7 +12,6 @@
     use App\Http\Controllers\ProductReviewController;
     use App\Http\Controllers\PostCommentController;
     use App\Http\Controllers\CouponController;
-    use App\Http\Controllers\PayPalController;
     use App\Http\Controllers\NotificationController;
     use App\Http\Controllers\HomeController;
     use \UniSharp\LaravelFilemanager\Lfm;
@@ -113,9 +112,8 @@
 // Coupon
     Route::post('/coupon-store', [CouponController::class, 'couponStore'])->middleware('auth')->name('coupon-store');
 // Payment
-    Route::get('payment', [PayPalController::class, 'payment'])->middleware('auth')->name('payment');
-    Route::get('cancel', [PayPalController::class, 'cancel'])->middleware('auth')->name('payment.cancel');
-    Route::get('payment/success', [PayPalController::class, 'success'])->middleware('auth')->name('payment.success');
+    // PayPal routes were removed because this repository does not contain a PayPal controller.
+    // Only the COD checkout flow is currently enabled.
 
 
 // Backend section start
