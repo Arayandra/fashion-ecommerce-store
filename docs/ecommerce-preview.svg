@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1020" viewBox="0 0 1440 1020" role="img" aria-labelledby="title desc">
+  <title id="title">E-Shop Laravel ecommerce storefront preview</title>
+  <desc id="desc">Illustrative desktop storefront preview showing product search, fashion categories, hero banner, product cards, wishlist and shopping cart controls.</desc>
+  <defs>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7eee6"/><stop offset="1" stop-color="#e8d8c9"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fa784e"/><stop offset="1" stop-color="#e94d32"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#243047" flood-opacity=".09"/>
+    </filter>
+    <style>
+      .sans{font-family:Inter,Arial,sans-serif}.muted{fill:#748092}.dark{fill:#202b3a}
+      .small{font-size:14px}.label{font-size:12px;font-weight:700;letter-spacing:1.2px}
+      .btn{font-size:14px;font-weight:700;letter-spacing:.4px}
+    </style>
+  </defs>
+  <rect width="1440" height="1020" fill="#f6f7f9"/>
+  <rect x="0" y="0" width="1440" height="42" fill="#202b3a"/>
+  <text x="720" y="27" class="sans" text-anchor="middle" font-size="12" fill="#fff" letter-spacing="1.1">NEW ARRIVALS · DISCOVER YOUR EVERYDAY STYLE</text>
+  <rect x="0" y="42" width="1440" height="92" fill="#fff"/>
+  <text x="82" y="99" class="sans" font-size="32" font-weight="800" fill="#202b3a">E-<tspan fill="#ed6546">SHOP</tspan></text>
+  <text x="83" y="117" class="sans" font-size="9" font-weight="700" letter-spacing="2.7" fill="#8b95a3">YOUR STYLE, YOUR WAY</text>
+  <rect x="385" y="67" width="520" height="45" rx="7" fill="#f6f7f9" stroke="#e7eaf0"/>
+  <text x="410" y="95" class="sans" font-size="14" fill="#9aa3af">Search products...</text>
+  <circle cx="875" cy="89" r="11" fill="none" stroke="#7d8795" stroke-width="2"/>
+  <path d="M883 97l8 8" stroke="#7d8795" stroke-width="2" stroke-linecap="round"/>
+  <g class="sans" fill="#344052">
+    <text x="1005" y="96" font-size="13">Account</text>
+    <text x="1110" y="96" font-size="13">Wishlist</text>
+    <text x="1225" y="96" font-size="13">Cart</text>
+  </g>
+  <circle cx="1204" cy="84" r="15" fill="#fce9e4"/><path d="M1197 83c0-5 7-7 7-1 0-6 7-4 7 1 0 4-7 9-7 9s-7-5-7-9z" fill="#ed6546"/>
+  <circle cx="1312" cy="84" r="15" fill="#fce9e4"/><path d="M1305 79h3l2 12h10l3-9h-14" fill="none" stroke="#ed6546" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="1312" cy="94" r="1.7" fill="#ed6546"/><circle cx="1320" cy="94" r="1.7" fill="#ed6546"/>
+  <rect x="0" y="134" width="1440" height="57" fill="#fff" stroke="#eef0f3"/>
+  <g class="sans" font-size="14" font-weight="700" fill="#4b5666">
+    <text x="84" y="169" fill="#ed6546">HOME</text><text x="175" y="169">SHOP</text><text x="266" y="169">MEN'S FASHION</text><text x="430" y="169">WOMEN'S FASHION</text><text x="605" y="169">BLOG</text><text x="680" y="169">ABOUT US</text><text x="795" y="169">CONTACT</text>
+  </g>
+  <rect x="0" y="191" width="1440" height="383" fill="url(#hero)"/>
+  <circle cx="1165" cy="372" r="220" fill="#dfc8b6" opacity=".54"/>
+  <circle cx="1165" cy="372" r="171" fill="#f7f0e9" opacity=".85"/>
+  <text x="100" y="276" class="sans label" fill="#e76748">THE NEW SEASON COLLECTION</text>
+  <text x="98" y="342" class="sans" font-size="56" font-weight="800" fill="#202b3a">Find Your</text>
+  <text x="98" y="406" class="sans" font-size="56" font-weight="800" fill="#202b3a">Everyday Style.</text>
+  <text x="101" y="449" class="sans" font-size="17" fill="#657184">Explore fashion essentials made for your daily</text>
+  <text x="101" y="476" class="sans" font-size="17" fill="#657184">moments. Browse, save, and shop with ease.</text>
+  <rect x="100" y="507" width="164" height="48" rx="5" fill="url(#orange)"/>
+  <text x="182" y="537" class="sans btn" text-anchor="middle" fill="#fff">SHOP PRODUCTS  →</text>
+  <g filter="url(#shadow)">
+    <rect x="1021" y="234" width="229" height="275" rx="18" fill="#fff"/>
+    <path d="M1088 314l42-30 49 30 13 118h-117z" fill="#26394d"/>
+    <path d="M1094 315l35 13 38-13-8 76h-56z" fill="#f5f0e9"/>
+    <path d="M1108 285q21 22 44 0" fill="none" stroke="#f0b79f" stroke-width="12" stroke-linecap="round"/>
+    <path d="M1130 285v30" stroke="#e5a68f" stroke-width="3"/>
+    <text x="1136" y="464" class="sans" font-size="13" font-weight="700" text-anchor="middle" fill="#263243">NEW SEASON EDIT</text>
+    <text x="1136" y="485" class="sans" font-size="11" text-anchor="middle" fill="#8c95a2">Simple pieces, lasting style</text>
+  </g>
+  <rect x="0" y="574" width="1440" height="446" fill="#fff"/>
+  <text x="84" y="638" class="sans label" fill="#ed6546">CURATED FOR YOU</text>
+  <text x="82" y="681" class="sans" font-size="32" font-weight="800" fill="#202b3a">Trending Products</text>
+  <text x="1356" y="677" class="sans" font-size="13" font-weight="700" text-anchor="end" fill="#ed6546">VIEW ALL PRODUCTS  →</text>
+  <g class="sans" font-size="13" font-weight="700">
+    <rect x="84" y="710" width="115" height="34" rx="17" fill="#202b3a"/><text x="141" y="732" text-anchor="middle" fill="#fff">All Products</text>
+    <rect x="210" y="710" width="118" height="34" rx="17" fill="#f4f5f7"/><text x="269" y="732" text-anchor="middle" fill="#667181">Men's Fashion</text>
+    <rect x="338" y="710" width="135" height="34" rx="17" fill="#f4f5f7"/><text x="405" y="732" text-anchor="middle" fill="#667181">Women's Fashion</text>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="84" y="770" width="292" height="218" rx="10" fill="#fff" stroke="#edf0f3"/>
+    <rect x="84" y="770" width="292" height="142" rx="10" fill="#f3eee9"/>
+    <path d="M183 810l32-17 25 12 25-12 31 17-17 23-12-7v63h-56v-63l-12 7z" fill="#d9a58e"/>
+    <path d="M215 793q25 18 50 0" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+    <text x="105" y="940" class="sans" font-size="16" font-weight="700" fill="#283344">Classic Casual Shirt</text>
+    <text x="105" y="968" class="sans" font-size="15" font-weight="800" fill="#ed6546">Rp250.000</text>
+    <text x="347" y="968" class="sans" font-size="12" text-anchor="end" fill="#98a1ad">♡</text>
+    <rect x="398" y="770" width="292" height="218" rx="10" fill="#fff" stroke="#edf0f3"/>
+    <rect x="398" y="770" width="292" height="142" rx="10" fill="#eaf0f2"/>
+    <path d="M486 803l28-13 28 10 28-10 28 13-10 27-14-7v70h-64v-70l-14 7z" fill="#506b83"/>
+    <path d="M514 791q28 20 56 0" fill="none" stroke="#d5e1e8" stroke-width="5" stroke-linecap="round"/>
+    <text x="419" y="940" class="sans" font-size="16" font-weight="700" fill="#283344">Everyday Overshirt</text>
+    <text x="419" y="968" class="sans" font-size="15" font-weight="800" fill="#ed6546">Rp400.000</text>
+    <text x="661" y="968" class="sans" font-size="12" text-anchor="end" fill="#98a1ad">♡</text>
+    <rect x="712" y="770" width="292" height="218" rx="10" fill="#fff" stroke="#edf0f3"/>
+    <rect x="712" y="770" width="292" height="142" rx="10" fill="#f2eee7"/>
+    <path d="M804 806h106l-9 91h-88z" fill="#d0b18c"/>
+    <path d="M824 807v-14h66v14" fill="none" stroke="#8a6d4d" stroke-width="6" stroke-linecap="round"/>
+    <path d="M824 827h66" stroke="#b18e68" stroke-width="2"/>
+    <text x="733" y="940" class="sans" font-size="16" font-weight="700" fill="#283344">Minimal Daily Tote</text>
+    <text x="733" y="968" class="sans" font-size="15" font-weight="800" fill="#ed6546">Rp180.000</text>
+    <text x="975" y="968" class="sans" font-size="12" text-anchor="end" fill="#98a1ad">♡</text>
+    <rect x="1026" y="770" width="292" height="218" rx="10" fill="#fff" stroke="#edf0f3"/>
+    <rect x="1026" y="770" width="292" height="142" rx="10" fill="#f0eef2"/>
+    <path d="M1094 865q8-33 40-35l62 5q22 5 25 29l-2 19h-130z" fill="#e6e6e8" stroke="#9da7b3" stroke-width="3"/>
+    <path d="M1132 831l-3 33m43-28l9 27" stroke="#aab2bd" stroke-width="3"/>
+    <path d="M1090 884h138" stroke="#29384a" stroke-width="5" stroke-linecap="round"/>
+    <text x="1047" y="940" class="sans" font-size="16" font-weight="700" fill="#283344">Weekend Sneakers</text>
+    <text x="1047" y="968" class="sans" font-size="15" font-weight="800" fill="#ed6546">Rp520.000</text>
+    <text x="1289" y="968" class="sans" font-size="12" text-anchor="end" fill="#98a1ad">♡</text>
+  </g>
+  <text x="720" y="1007" class="sans" text-anchor="middle" font-size="10" fill="#a5acb6">ILLUSTRATIVE PRODUCT CATALOG PREVIEW · E-SHOP LARAVEL</text>
+</svg>
